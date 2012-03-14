@@ -1,11 +1,9 @@
 require "rubygems"
 require "bundler/setup"
 
-require 'sinatra/base'
+require 'sinatra'
 
-class SongsDB < Sinatra::Base
-	get '/' do
-		"Hello World!"
-	end
+get '/' do
+	"Hello World!"
 end
 
