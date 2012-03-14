@@ -4,13 +4,24 @@ require "bundler/setup"
 # Use sinatra
 require 'sinatra'
 
-get '/' do
-	@name = "Ben"
-	erb :index
+# Use datamapper for SQL access
+require 'data_mapper'
+
+DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/songs.db")
+
+class Song
+	include DataMapper::Resource
+
+	property :id, Serial
+	property :name, String
 end
 
-get '/:name' do |name|
-	@name = name
+DataMapper.auto_migrate!
+
+get '/' do
+	Song.create(:name => "Never Gonna Give You Up").save
+
+	@name = Song.all.first.name
 	erb :index
 end
 
