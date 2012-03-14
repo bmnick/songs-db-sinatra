@@ -5,6 +5,12 @@ require "bundler/setup"
 require 'sinatra'
 
 get '/' do
-	"Hello World!"
+	@name = "Ben"
+	erb :index
+end
+
+get '/:name' do |name|
+	@name = name
+	erb :index
 end
 
