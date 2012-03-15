@@ -1,5 +1,6 @@
 # This ensures than any further requires refer to the version of the gems that you specify in your Gemfile
 require "bundler/setup"
+require "pp"
 
 # Use sinatra
 require 'sinatra'
