@@ -1,0 +1,31 @@
+<h1>Listing Artists</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>
+			</th>
+			<th>
+				Name
+			</th>
+			<th>
+				Songs
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @artists.each do |artist| %>
+			<tr>
+				<td>
+					<%= artist.id %>
+				</td>
+				<td>
+					<%= artist.name %>
+				</td>
+				<td>
+					<%= artist.songs.map(&:name).join(', ') %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

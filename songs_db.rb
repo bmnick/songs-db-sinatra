@@ -35,3 +35,37 @@ get '/' do
 	erb :index
 end
 
+
+get '/songs' do
+	@songs = Song.all
+
+	erb :"songs/index"
+end
+
+get '/songs/new' do
+	@song = Song.new
+	@artists = Artist.all
+
+	erb :"songs/new"
+end
+
+post '/songs' do
+	@song = Song.new(name: params[:song][:name])
+
+	ids = params[:song][:artists].keys.map(&:to_i)
+
+	Artist.all(:id => ids).each do |artist|
+		@song.artists << artist
+	end
+
+	@song.save
+
+	redirect '/songs'
+end
+
+get '/artists' do
+	@artists = Artist.all
+
+	erb :"artists/index"
+end
+
