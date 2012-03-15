@@ -15,13 +15,22 @@ class Song
 
 	property :id, Serial
 	property :name, String
+
+	has n, :artists, through: Resource
 end
 
-DataMapper.auto_migrate!
+class Artist
+	include DataMapper::Resource
+
+	property :id, Serial
+	property :name, String
+
+	has n, :songs, through: Resource
+end
+
+DataMapper.finalize.auto_upgrade!
 
 get '/' do
-	Song.create(:name => "Never Gonna Give You Up").save
-
 	@name = Song.all.first.name
 	erb :index
 end
