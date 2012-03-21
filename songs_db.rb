@@ -4,6 +4,7 @@ require "pp"
 
 # Use sinatra
 require 'sinatra'
+require 'sinatra/reloader'
 
 # Use datamapper for SQL access
 require 'data_mapper'
@@ -49,6 +50,12 @@ get '/songs/new' do
 	erb :"songs/new"
 end
 
+get '/songs/:id' do |id|
+	@song = Song.get(id)
+
+	erb :"songs/show"
+end
+
 post '/songs' do
 	@song = Song.new(name: params[:song][:name])
 
@@ -67,5 +74,32 @@ get '/artists' do
 	@artists = Artist.all
 
 	erb :"artists/index"
+end
+
+get '/artists/new' do
+	@artist = Artist.new
+	@songs = Song.all
+
+	erb :"artists/new"
+end
+
+get '/artist/:id' do |id|
+	@artist = Artist.get(id)
+
+	erb :"artists/show"
+end
+
+post '/artists' do
+	@artist = Artist.new(name: params[:artist][:name])
+
+	ids = params[:artist][:songs].keys.map(&:to_i)
+
+	Song.all(:id => ids).each do |song|
+		@artist.songs << song
+	end
+
+	@artist.save
+
+	redirect '/artists'
 end
 
